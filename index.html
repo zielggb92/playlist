@@ -1999,7 +1999,7 @@ function hPl(){
     :`<div class="hdr-sub">${d} de ${tot} tocadas · <b>${pct}%</b></div>`;
   const hasAudio=(p.songs||[]).some(s=>s.mediaType==='audio');
   const clearBtn=hasAudio?`<button class="ibtn" style="color:#ffb86b" data-action="clear-pl-audios" title="Remover todos os áudios desta playlist">🧹</button>`:'';
-  return`<div class="hdr"><button class="hdr-back" data-action="${backActionFor()}">‹</button><div style="flex:1;min-width:0"><div class="hdr-title" style="font-family:${t.hf}">${esc(p.name||'')</div>${infoLine}</div><div class="hdr-right"><button class="ibtn" data-action="open-pres" title="Modo Apresentação">🎬</button><button class="ibtn ${S.screen?'on':''}" data-action="ask-screen">☀️</button><button class="ibtn ${isFS()?'on':''}" data-action="fs">⛶</button>${clearBtn}<button class="ibtn" style="color:#ff8080" data-action="del-pl">🗑</button><button class="ibtn" data-action="export-pdf" title="Exportar PDF">📄</button></div></div>`;
+  return`<div class="hdr"><button class="hdr-back" data-action="${backActionFor()}">‹</button><div style="flex:1;min-width:0"><div class="hdr-title" style="font-family:${t.hf}">${esc(p.name||'')}</div>${infoLine}</div><div class="hdr-right"><button class="ibtn" data-action="open-pres" title="Modo Apresentação">🎬</button><button class="ibtn ${S.screen?'on':''}" data-action="ask-screen">☀️</button><button class="ibtn ${isFS()?'on':''}" data-action="fs">⛶</button>${clearBtn}<button class="ibtn" style="color:#ff8080" data-action="del-pl">🗑</button><button class="ibtn" data-action="export-pdf" title="Exportar PDF">📄</button></div></div>`;
 }
 function hSimp(title){
   const back=backActionFor();
