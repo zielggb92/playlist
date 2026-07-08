@@ -1549,8 +1549,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(fi)fi.addEventListener('change',()=>{if(fi.files&&fi.files[0])importBackupFile(fi.files[0]);fi.value='';});
 });
 
-document.addEventListener('fullscreenchange',()=>render());
-document.addEventListener('webkitfullscreenchange',()=>render());
+function updateFsButtons(){
+  document.querySelectorAll('[data-action="fs"]').forEach(b=>b.classList.toggle('on',isFS()));
+}
+document.addEventListener('fullscreenchange',()=>updateFsButtons());
+document.addEventListener('webkitfullscreenchange',()=>updateFsButtons());
 document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'&&S.screen){
     if(!S.wl)reqWakeLock();
@@ -3844,12 +3847,4 @@ function presBindSwipe(){
   document.addEventListener('keydown',e=>{
     if(!S._presMode)return;
     if(e.key==='ArrowRight'||e.key==='ArrowDown')presGo(S._presIdx+1);
-    if(e.key==='ArrowLeft'||e.key==='ArrowUp')presGo(S._presIdx-1);
-    if(e.key==='Enter'||e.key===' ')presToggleDone();
-    if(e.key==='Escape')presClose();
-  });
-})();
-
-</script>
-</body>
-</html>
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp')presGo(S.
