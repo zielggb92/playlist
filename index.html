@@ -907,7 +907,19 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 </div>
 
 <audio id="audio-player" preload="metadata" style="display:none"></audio>
-
+<!-- Firebase (Storage para os áudios) -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyDwt1Mr_hKv6R8VZIBAlRVX5hzuiXmdkLc",
+  authDomain: "playlist-geziel.firebaseapp.com",
+  projectId: "playlist-geziel",
+  storageBucket: "playlist-geziel.firebasestorage.app",
+  messagingSenderId: "696576566271",
+  appId: "1:696576566271:web:3e407504e50e7a0f60bdca"
+});
+</script>
 <script>
 /* ═══════════════════════════════
    THEMES — cada um com foto real
