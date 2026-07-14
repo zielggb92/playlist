@@ -1172,35 +1172,57 @@ function openAudioIDB(){
 async function saveAudio(id,file,name){
   try{
     const db=await openAudioIDB();
-    return new Promise((res,rej)=>{
+    await new Promise((res,rej)=>{
       const tx=db.transaction('audios','readwrite');
       tx.objectStore('audios').put({blob:file,name:name||file.name||'áudio'},id);
       tx.oncomplete=()=>res();
       tx.onerror=()=>rej(tx.error);
     });
+    _cachedAudioIds.add(id);
   }catch(e){console.warn('audio save error',e)}
+  uploadAudioToCloud(id,file).then(url=>{if(url)toast('☁️ Áudio salvo na nuvem');});
 }
 async function loadAudio(id){
   try{
     const db=await openAudioIDB();
-    return new Promise((res)=>{
+    const rec=await new Promise((res)=>{
       const tx=db.transaction('audios','readonly');
       const req=tx.objectStore('audios').get(id);
       req.onsuccess=()=>res(req.result||null);
       req.onerror=()=>res(null);
     });
-  }catch(e){return null}
+    if(rec)return rec;
+  }catch(e){}
+  const url=ldAudioUrls()[id];
+  if(!url)return null;
+  try{
+    toast('☁️ Baixando áudio...');
+    const resp=await fetch(url);
+    if(!resp.ok)throw new Error('download falhou');
+    const blob=await resp.blob();
+    const db=await openAudioIDB();
+    const rec={blob,name:'áudio'};
+    await new Promise((res,rej)=>{
+      const tx=db.transaction('audios','readwrite');
+      tx.objectStore('audios').put(rec,id);
+      tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);
+    });
+    _cachedAudioIds.add(id);
+    return rec;
+  }catch(e){console.warn('audio cloud download error',e);toast('⚠️ Não consegui baixar da nuvem');return null}
 }
 async function deleteAudio(id){
   try{
     const db=await openAudioIDB();
-    return new Promise((res)=>{
+    await new Promise((res)=>{
       const tx=db.transaction('audios','readwrite');
       tx.objectStore('audios').delete(id);
       tx.oncomplete=()=>res();
       tx.onerror=()=>res();
     });
+    _cachedAudioIds.delete(id);
   }catch(e){}
+  deleteAudioFromCloud(id);
 }
 
 /* Playlists antigas (criadas antes do rótulo virar um campo salvo) não tinham
